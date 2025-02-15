@@ -34,11 +34,17 @@ class State:
     async def _initialize(self):
         if self.context:
             return
+        
+        if self.agent.config.browser_model.enable_cdp:
+            wss_url = self.agent.config.browser_model.cdp_url
+        else:
+            wss_url = None
 
         self.browser = browser_use.Browser(
             config=browser_use.BrowserConfig(
                 headless=True,
                 disable_security=True,
+                wss_url=wss_url
             )
         )
 

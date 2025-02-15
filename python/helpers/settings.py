@@ -344,7 +344,7 @@ def convert_out(settings: Settings) -> SettingsOutput:
             "title": "CDP URL",
             "description": "URL of Chrome DevTools Protocol server",
             "type": "text",
-            "value": dotenv.get_dotenv_value(dotenv.BROWSER_CDP_URL) or "",
+            "value": settings["browser_cdp_url"],
         }
     )
 
