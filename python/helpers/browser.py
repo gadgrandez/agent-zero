@@ -22,12 +22,14 @@ class Browser:
     interact_timeout = 3000
     selector_name = "data-a0sel3ct0r"
 
-    def __init__(self, headless=True):
+    def __init__(self, headless=True, use_cdp=False, cdp_url=None):
         self.browser: PlaywrightBrowser = None  # type: ignore
         self.context: BrowserContext = None  # type: ignore
         self.page: Page = None  # type: ignore
         self._playwright = None
         self.headless = headless
+        self.use_cdp = use_cdp
+        self.cdp_url = cdp_url
         self.contexts = {}
         self.last_selector = ""
         self.page_loaded = False
@@ -44,9 +46,14 @@ class Browser:
         """Start browser session"""
         self._playwright = await async_playwright().start()
         if not self.browser:
-            self.browser = await self._playwright.chromium.launch(
-                headless=self.headless, args=["--disable-http2"]
-            )
+            if self.use_cdp:
+                self.browser = await self._playwright.chromium.connectOverCDP(
+                    self.cdp_url
+                )
+            else:
+                self.browser = await self._playwright.chromium.launch(
+                    headless=self.headless, args=["--disable-http2"]
+                )
         if not self.context:
             self.context = await self.browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.141 Safari/537.36"

@@ -35,6 +35,9 @@ class Settings(TypedDict):
     embed_model_rl_requests: int
     embed_model_rl_input: int
 
+    browser_enable_cdp: bool
+    browser_cdp_url: str
+
     browser_model_provider: str
     browser_model_name: str
     browser_model_vision: bool
@@ -326,6 +329,25 @@ def convert_out(settings: Settings) -> SettingsOutput:
 
     # embedding model section
     browser_model_fields: list[SettingsField] = []
+    browser_model_fields.append(
+        {
+            "id": "browser_enable_cdp",
+            "title": "Enable Chrome DevTools Protocol",
+            "description": "Enable Chrome DevTools Protocol to interact with web pages. Requires additional setup.",
+            "type": "switch",
+            "value": settings["browser_enable_cdp"],
+        }
+    )
+    browser_model_fields.append(
+        {
+            "id": "browser_cdp_url",
+            "title": "CDP URL",
+            "description": "URL of Chrome DevTools Protocol server",
+            "type": "text",
+            "value": dotenv.get_dotenv_value(dotenv.BROWSER_CDP_URL) or "",
+        }
+    )
+
     browser_model_fields.append(
         {
             "id": "browser_model_provider",
@@ -793,6 +815,8 @@ def get_default_settings() -> Settings:
         embed_model_kwargs={},
         embed_model_rl_requests=0,
         embed_model_rl_input=0,
+        browser_enable_cdp=False,
+        browser_cdp_url="",
         browser_model_provider=ModelProvider.OPENAI.name,
         browser_model_name="gpt-4o",
         browser_model_vision=False,

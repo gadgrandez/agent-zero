@@ -151,6 +151,8 @@ class ModelConfig:
     limit_requests: int = 0
     limit_input: int = 0
     limit_output: int = 0
+    enable_cdp: bool = False
+    cdp_url: str = ""
     vision: bool = False
     kwargs: dict = field(default_factory=dict)
 

@@ -40,6 +40,8 @@ def initialize():
     browser_llm = ModelConfig(
         provider=models.ModelProvider[current_settings["browser_model_provider"]],
         name=current_settings["browser_model_name"],
+        enable_cdp=current_settings["browser_enable_cdp"],
+        cdp_url=current_settings["browser_cdp_url"],
         vision=current_settings["browser_model_vision"],
         kwargs=current_settings["browser_model_kwargs"],
     )

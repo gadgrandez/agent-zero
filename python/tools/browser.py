@@ -38,7 +38,7 @@ class Browser(Tool):
     async def prepare_state(self, reset=False):
         self.state = self.agent.get_data("_browser_state")
         if not self.state or reset:
-            self.state = State(browser=BrowserManager())
+            self.state = State(browser=BrowserManager(use_cdp=self.agent.config.browser_model.enable_cdp, cdp_url=self.agent.config.browser_model.cdp_url))
         self.agent.set_data("_browser_state", self.state)
 
     def update_progress(self, text):
