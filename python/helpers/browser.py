@@ -22,7 +22,7 @@ class Browser:
     interact_timeout = 3000
     selector_name = "data-a0sel3ct0r"
 
-    def __init__(self, headless=True, use_cdp=False, cdp_url=None):
+    def __init__(self, headless=True, use_cdp=False, cdp_url=""):
         self.browser: PlaywrightBrowser = None  # type: ignore
         self.context: BrowserContext = None  # type: ignore
         self.page: Page = None  # type: ignore
@@ -47,7 +47,7 @@ class Browser:
         self._playwright = await async_playwright().start()
         if not self.browser:
             if self.use_cdp:
-                self.browser = await self._playwright.chromium.connectOverCDP(
+                self.browser = await self._playwright.chromium.connect_over_cdp(
                     self.cdp_url
                 )
             else:
